@@ -1,0 +1,27 @@
+{
+    "name": "secretwebmaster/wncms-faqs",
+    "description": "FAQ module package for WNCMS",
+    "type": "library",
+    "keywords": [
+        "wncms"
+    ],
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Secretwebmaster\\WncmsFaqs\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Secretwebmaster\\WncmsFaqs\\Providers\\WncmsFaqsServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "php": "^8.2",
+        "secretwebmaster/wncms-core": "^5.0 || dev-main"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
