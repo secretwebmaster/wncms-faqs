@@ -76,13 +76,6 @@ wncms-faqs/
 
 ---
 
-## Versioning
-
-This repository follows **semantic versioning (SemVer)**.
-Current stable release: **v1.0.0**
-
----
-
 ## Author
 
 **Secretwebmaster**

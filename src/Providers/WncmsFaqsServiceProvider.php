@@ -3,6 +3,8 @@
 namespace Secretwebmaster\WncmsFaqs\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Secretwebmaster\WncmsFaqs\Models\Faq;
+use Secretwebmaster\WncmsFaqs\Http\Controllers\FaqController;
 use Secretwebmaster\WncmsFaqs\Services\Managers\FaqManager;
 
 class WncmsFaqsServiceProvider extends ServiceProvider
@@ -39,8 +41,8 @@ class WncmsFaqsServiceProvider extends ServiceProvider
         // translations
         $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'wncms-faqs');
 
+        // Register WNCMS package
         wncms()->registerPackage('wncms-faqs', [
-            // Basic info (fully translatable)
             'info' => [
                 'name' => [
                     'en'    => 'FAQs',
@@ -59,59 +61,65 @@ class WncmsFaqsServiceProvider extends ServiceProvider
                 'icon'    => 'fa-solid fa-circle-question',
             ],
 
-            // File paths
             'paths' => [
-                'models'   => __DIR__ . '/../../src/Models',
-                'managers' => __DIR__ . '/../../src/Services/Managers',
-                'base'     => __DIR__ . '/../../',
+                'models' => [
+                    'faq' => Faq::class,
+                ],
+                'managers' => [
+                    'faq' => FaqManager::class,
+                ],
+                'controllers' => [
+                    'faq' => FaqController::class,
+                ],
+                'base' => __DIR__ . '/../../',
             ],
 
             'menus' => [
                 [
-                    'name' => [
-                        'en' => 'FAQs',
+                    'title' => [
+                        'en'    => 'FAQs',
                         'zh_TW' => '常見問題',
                         'zh_CN' => '常见问题',
-                        'ja' => 'FAQ',
+                        'ja'    => 'FAQ',
                     ],
-                    'icon' => 'fa-solid fa-circle-question',
+                    'icon'        => 'fa-solid fa-circle-question',
+                    'permission'  => 'faq_index',
                     'items' => [
                         [
                             'name' => [
-                                'en' => 'FAQ List',
+                                'en'    => 'FAQ List',
                                 'zh_TW' => '問題列表',
                                 'zh_CN' => '问题列表',
-                                'ja' => 'FAQ一覧',
+                                'ja'    => 'FAQ一覧',
                             ],
-                            'route' => 'faqs.index',
-                            'permission' => 'faq_index',
+                            'route'       => 'faqs.index',
+                            'permission'  => 'faq_index',
                         ],
                         [
                             'name' => [
-                                'en' => 'Create FAQ',
+                                'en'    => 'Create FAQ',
                                 'zh_TW' => '新增問題',
                                 'zh_CN' => '新增问题',
-                                'ja' => 'FAQを作成',
+                                'ja'    => 'FAQを作成',
                             ],
-                            'route' => 'faqs.create',
-                            'permission' => 'faq_create',
+                            'route'       => 'faqs.create',
+                            'permission'  => 'faq_create',
                         ],
                     ],
                 ],
             ],
 
-            // Permissions (auto-assigned to admin roles)
             'permissions' => [
-                'faq_bulk_create',
-                'faq_bulk_delete',
-                'faq_bulk_edit',
-                'faq_clone',
-                'faq_create',
-                'faq_delete',
-                'faq_edit',
                 'faq_index',
-                'faq_list',
                 'faq_show',
+                'faq_create',
+                'faq_edit',
+                'faq_delete',
+                'faq_list',
+                'faq_clone',
+                'faq_bulk_create',
+                'faq_bulk_edit',
+                'faq_bulk_delete',
             ],
         ]);
     }
