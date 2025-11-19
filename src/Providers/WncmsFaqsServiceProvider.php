@@ -14,35 +14,10 @@ class WncmsFaqsServiceProvider extends ServiceProvider
         $this->app->singleton('wncms.faq', function () {
             return new FaqManager();
         });
-    }
 
-    public function boot(): void
-    {
-        // migrations
-        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
-
-        // views
-        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'wncms-faqs');
-
-        // routes
-        if (file_exists(__DIR__ . '/../../routes/web.php')) {
-            $this->loadRoutesFrom(__DIR__ . '/../../routes/web.php');
-        }
-
-        if (file_exists(__DIR__ . '/../../routes/api.php')) {
-            $this->loadRoutesFrom(__DIR__ . '/../../routes/api.php');
-        }
-
-        // seeders
-        $this->publishes([
-            __DIR__ . '/../../database/seeders/FaqSeeder.php' => database_path('seeders/FaqSeeder.php'),
-        ], 'wncms-faqs-seeders');
-
-        // translations
-        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'wncms-faqs');
-
-        // Register WNCMS package
         wncms()->registerPackage('wncms-faqs', [
+            'base' => __DIR__ . '/../../',
+
             'info' => [
                 'name' => [
                     'en'    => 'FAQs',
@@ -61,17 +36,16 @@ class WncmsFaqsServiceProvider extends ServiceProvider
                 'icon'    => 'fa-solid fa-circle-question',
             ],
 
-            'paths' => [
-                'models' => [
-                    'faq' => Faq::class,
-                ],
-                'managers' => [
-                    'faq' => FaqManager::class,
-                ],
-                'controllers' => [
-                    'faq' => FaqController::class,
-                ],
-                'base' => __DIR__ . '/../../',
+            'models' => [
+                'faq' => Faq::class,
+            ],
+
+            'managers' => [
+                'faq' => FaqManager::class,
+            ],
+
+            'controllers' => [
+                'faq' => FaqController::class,
             ],
 
             'menus' => [
@@ -122,5 +96,37 @@ class WncmsFaqsServiceProvider extends ServiceProvider
                 'faq_bulk_delete',
             ],
         ]);
+    }
+
+    public function boot(): void
+    {
+        // migrations
+        $this->loadMigrationsFrom(__DIR__ . '/../../database/migrations');
+
+        // views
+        $this->loadViewsFrom(__DIR__ . '/../../resources/views', 'wncms-faqs');
+
+        // routes
+        if (file_exists(__DIR__ . '/../../routes/web.php')) {
+            $this->loadRoutesFrom(__DIR__ . '/../../routes/web.php');
+        }
+
+        if (file_exists(__DIR__ . '/../../routes/api.php')) {
+            $this->loadRoutesFrom(__DIR__ . '/../../routes/api.php');
+        }
+
+        // seeders
+        $this->publishes([
+            __DIR__ . '/../../database/seeders/FaqSeeder.php' => database_path('seeders/FaqSeeder.php'),
+        ], 'wncms-faqs-seeders');
+
+        // translations
+        $this->loadTranslationsFrom(__DIR__ . '/../../resources/lang', 'wncms-faqs');
+
+        if ($this->app->runningInConsole()) {
+            $this->commands([
+                \Secretwebmaster\WncmsFaqs\Console\Commands\ImportDemo::class,
+            ]);
+        }
     }
 }

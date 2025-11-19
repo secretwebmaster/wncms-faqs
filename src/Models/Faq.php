@@ -9,6 +9,13 @@ class Faq extends BaseModel
 {
     use HasTranslations;
 
+    /**
+     * ----------------------------------------------------------------------------------------------------
+     * Propertyies
+     * ----------------------------------------------------------------------------------------------------
+     */
+    public static $modelKey = 'faq';
+
     protected $table = 'faqs';
 
     protected $guarded = [];
@@ -21,6 +28,19 @@ class Faq extends BaseModel
 
     protected $casts = [
         'is_pinned' => 'boolean',
+    ];
+
+    protected static array $tagMetas = [
+        [
+            'key'   => 'faq_category',
+            'short' => 'category',
+            'route' => 'frontend.faqs.tag',
+        ],
+        [
+            'key'   => 'faq_tag',
+            'short' => 'tag',
+            'route' => 'frontend.faqs.tag',
+        ],
     ];
 
     public const ICONS = [
